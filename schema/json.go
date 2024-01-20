@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/jimyag/parquet-go/common"
-	"github.com/jimyag/parquet-go/parquet"
+	"github.com/jimyag/go-parquet/common"
+	"github.com/jimyag/go-parquet/parquet"
 )
 
 type JSONSchemaItemType struct {

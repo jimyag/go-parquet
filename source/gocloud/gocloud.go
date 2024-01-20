@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 	"gocloud.dev/blob"
 
-	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/go-parquet/source"
 )
 
 type blobFile struct {

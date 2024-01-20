@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/schema"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/schema"
 )
 
 func ParquetTypeToParquetTypeStr(pT *parquet.Type, cT *parquet.ConvertedType) (string, string) {

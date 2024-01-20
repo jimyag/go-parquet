@@ -4,7 +4,7 @@ import (
 	"io"
 	"path/filepath"
 
-	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/go-parquet/source"
 	"github.com/spf13/afero"
 )
 

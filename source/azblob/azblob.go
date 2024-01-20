@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 
-	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/go-parquet/source"
 )
 
 // AzBlockBlob is ParquetFile for azblob

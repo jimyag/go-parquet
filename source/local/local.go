@@ -3,7 +3,7 @@ package local
 import (
 	"os"
 
-	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/go-parquet/source"
 )
 
 type LocalFile struct {

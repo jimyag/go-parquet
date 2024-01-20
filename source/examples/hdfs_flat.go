@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/jimyag/parquet-go/reader"
-	"github.com/jimyag/parquet-go/source/hdfs"
-	"github.com/jimyag/parquet-go/writer"
+	"github.com/jimyag/go-parquet/reader"
+	"github.com/jimyag/go-parquet/source/hdfs"
+	"github.com/jimyag/go-parquet/writer"
 )
 
 type Student struct {

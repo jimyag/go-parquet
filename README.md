@@ -24,7 +24,7 @@ The `example/` directory contains several examples.
 The `local_flat.go` example creates some data and writes it out to the `example/output/flat.parquet` file.
 
 ```sh
-cd $GOPATH/src/github.com/jimyag/parquet-go/example
+cd $GOPATH/src/github.com/jimyag/go-parquet/example
 go run local_flat.go
 ```
 
@@ -41,7 +41,7 @@ There are two types in Parquet: Primitive Type and Logical Type. Logical types a
 |BOOLEAN|bool|
 |INT32|int32|
 |INT64|int64|
-|INT96([deprecated](https://github.com/jimyag/parquet-go/issues/420))|string|
+|INT96([deprecated](https://github.com/jimyag/go-parquet/issues/420))|string|
 |FLOAT|float32|
 |DOUBLE|float64|
 |BYTE_ARRAY|string|
@@ -74,7 +74,7 @@ There are two types in Parquet: Primitive Type and Logical Type. Logical types a
 
 * Parquet-go supports type alias such `type MyString string`. But the base type must follow the table instructions.
 
-* Some type convert functions: [converter.go](https://github.com/jimyag/parquet-go/blob/master/types/converter.go)
+* Some type convert functions: [converter.go](https://github.com/jimyag/go-parquet/blob/master/types/converter.go)
 
 ## Encoding
 
@@ -198,26 +198,26 @@ Using this interface, parquet-go can read/write parquet file on different platfo
 Four Writers are supported: ParquetWriter, JSONWriter, CSVWriter, ArrowWriter.
 
 * ParquetWriter is used to write predefined Golang structs.
-[Example of ParquetWriter](https://github.com/jimyag/parquet-go/blob/master/example/local_flat.go)
+[Example of ParquetWriter](https://github.com/jimyag/go-parquet/blob/master/example/local_flat.go)
 
 * JSONWriter is used to write JSON strings
-[Example of JSONWriter](https://github.com/jimyag/parquet-go/blob/master/example/json_write.go)
+[Example of JSONWriter](https://github.com/jimyag/go-parquet/blob/master/example/json_write.go)
 
 * CSVWriter is used to write data format similar with CSV(not nested)
-[Example of CSVWriter](https://github.com/jimyag/parquet-go/blob/master/example/csv_write.go)
+[Example of CSVWriter](https://github.com/jimyag/go-parquet/blob/master/example/csv_write.go)
 
 * ArrowWriter is used to write parquet files using Arrow Schemas
-[Example of ArrowWriter](https://github.com/jimyag/parquet-go/blob/master/example/arrow_to_parquet.go)
+[Example of ArrowWriter](https://github.com/jimyag/go-parquet/blob/master/example/arrow_to_parquet.go)
 
 ## Reader
 
 Two Readers are supported: ParquetReader, ColumnReader
 
 * ParquetReader is used to read predefined Golang structs
-[Example of ParquetReader](https://github.com/jimyag/parquet-go/blob/master/example/local_nested.go)
+[Example of ParquetReader](https://github.com/jimyag/go-parquet/blob/master/example/local_nested.go)
 
 * ColumnReader is used to read raw column data. The read function return 3 slices([value], [RepetitionLevel], [DefinitionLevel]) of the records.
-[Example of ColumnReader](https://github.com/jimyag/parquet-go/blob/master/example/column_read.go)
+[Example of ColumnReader](https://github.com/jimyag/go-parquet/blob/master/example/column_read.go)
 
 ### Tips
 
@@ -248,7 +248,7 @@ type Student struct {
 }
 ```
 
-[Example of tags](https://github.com/jimyag/parquet-go/blob/master/example/local_flat.go)
+[Example of tags](https://github.com/jimyag/go-parquet/blob/master/example/local_flat.go)
 
 ### JSON
 
@@ -322,7 +322,7 @@ var jsonSchema string = `
 `
 ```
 
-[Example of JSON schema](https://github.com/jimyag/parquet-go/blob/master/example/json_schema.go)
+[Example of JSON schema](https://github.com/jimyag/go-parquet/blob/master/example/json_schema.go)
 
 ### CSV metadata
 
@@ -336,7 +336,7 @@ var jsonSchema string = `
  }
 ```
 
-[Example of CSV metadata](https://github.com/jimyag/parquet-go/blob/master/example/csv_write.go)
+[Example of CSV metadata](https://github.com/jimyag/go-parquet/blob/master/example/csv_write.go)
 
 ### Arrow metadata
 
@@ -351,15 +351,15 @@ var jsonSchema string = `
  )
 ```
 
-[Example of Arrow metadata](https://github.com/jimyag/parquet-go/blob/master/example/arrow_to_parquet.go)
+[Example of Arrow metadata](https://github.com/jimyag/go-parquet/blob/master/example/arrow_to_parquet.go)
 
 ### Tips
 
 * Parquet-go reads data as an object in Golang and every field must be a public field, which start with an upper letter. This field name we call it `InName`. Field name in parquet file we call it `ExName`. Function `common.HeadToUpper` converts `ExName` to `InName`. There are some restriction:
 
 1. It's not allowed if two field names are only different at their first letter case. Such as `name` and `Name`.
-2. `PARGO_PREFIX_` is a reserved string, which you'd better not use it as a name prefix. ([#294](https://github.com/jimyag/parquet-go/issues/294))
-3. Use `\x01` as the delimiter of fields to support `.` in some field name.([dot_in_name.go](https://github.com/jimyag/parquet-go/blob/master/example/dot_in_name.go), [#349](https://github.com/jimyag/parquet-go/issues/349))
+2. `PARGO_PREFIX_` is a reserved string, which you'd better not use it as a name prefix. ([#294](https://github.com/jimyag/go-parquet/issues/294))
+3. Use `\x01` as the delimiter of fields to support `.` in some field name.([dot_in_name.go](https://github.com/jimyag/go-parquet/blob/master/example/dot_in_name.go), [#349](https://github.com/jimyag/go-parquet/issues/349))
 
 ## Concurrency
 
@@ -377,26 +377,26 @@ func NewArrowWriter(arrowSchema *arrow.Schema, pfile source.ParquetFile, np int6
 
 |Example file|Descriptions|
 |-|-|
-|[local_flat.go](https://github.com/jimyag/parquet-go/blob/master/example/local_flat.go)|write/read parquet file with no nested struct|
-|[local_nested.go](https://github.com/jimyag/parquet-go/blob/master/example/local_nested.go)|write/read parquet file with nested struct|
-|[read_partial.go](https://github.com/jimyag/parquet-go/blob/master/example/read_partial.go)|read partial fields from a parquet file|
-|[read_partial2.go](https://github.com/jimyag/parquet-go/blob/master/example/read_partial2.go)|read sub-struct from a parquet file|
-|[read_without_schema_predefined.go](https://github.com/jimyag/parquet-go/blob/master/example/read_without_schema_predefined.go)|read a parquet file and no struct/schema predefined needed|
-|[read_partial_without_schema_predefined.go](https://github.com/jimyag/parquet-go/blob/master/example/read_partial_without_schema_predefined.go)|read sub-struct from a parquet file and no struct/schema predefined needed|
-|[json_schema.go](https://github.com/jimyag/parquet-go/blob/master/example/json_schema.go)|define schema using json string|
-|[json_write.go](https://github.com/jimyag/parquet-go/blob/master/example/json_write.go)|convert json to parquet|
-|[convert_to_json.go](https://github.com/jimyag/parquet-go/blob/master/example/convert_to_json.go)|convert parquet to json|
-|[csv_write.go](https://github.com/jimyag/parquet-go/blob/master/example/csv_write.go)|special csv writer|
-|[column_read.go](https://github.com/jimyag/parquet-go/blob/master/example/column_read.go)|read raw column data and return value,repetitionLevel,definitionLevel|
-|[type.go](https://github.com/jimyag/parquet-go/blob/master/example/type.go)|example for schema of types|
-|[type_alias.go](https://github.com/jimyag/parquet-go/blob/master/example/type_alias.go)|example for type alias|
-|[writer.go](https://github.com/jimyag/parquet-go/blob/master/example/writer.go)|create ParquetWriter from io.Writer|
-|[keyvalue_metadata.go](https://github.com/jimyag/parquet-go/blob/master/example/keyvalue_metadata.go)|write keyvalue metadata|
-|[dot_in_name.go](https://github.com/jimyag/parquet-go/blob/master/example/dot_in_name.go)|`.` in filed name|
-|[arrow_to_parquet.go](https://github.com/jimyag/parquet-go/blob/master/example/arrow_to_parquet.go)|write/read parquet file using arrow definition|
+|[local_flat.go](https://github.com/jimyag/go-parquet/blob/master/example/local_flat.go)|write/read parquet file with no nested struct|
+|[local_nested.go](https://github.com/jimyag/go-parquet/blob/master/example/local_nested.go)|write/read parquet file with nested struct|
+|[read_partial.go](https://github.com/jimyag/go-parquet/blob/master/example/read_partial.go)|read partial fields from a parquet file|
+|[read_partial2.go](https://github.com/jimyag/go-parquet/blob/master/example/read_partial2.go)|read sub-struct from a parquet file|
+|[read_without_schema_predefined.go](https://github.com/jimyag/go-parquet/blob/master/example/read_without_schema_predefined.go)|read a parquet file and no struct/schema predefined needed|
+|[read_partial_without_schema_predefined.go](https://github.com/jimyag/go-parquet/blob/master/example/read_partial_without_schema_predefined.go)|read sub-struct from a parquet file and no struct/schema predefined needed|
+|[json_schema.go](https://github.com/jimyag/go-parquet/blob/master/example/json_schema.go)|define schema using json string|
+|[json_write.go](https://github.com/jimyag/go-parquet/blob/master/example/json_write.go)|convert json to parquet|
+|[convert_to_json.go](https://github.com/jimyag/go-parquet/blob/master/example/convert_to_json.go)|convert parquet to json|
+|[csv_write.go](https://github.com/jimyag/go-parquet/blob/master/example/csv_write.go)|special csv writer|
+|[column_read.go](https://github.com/jimyag/go-parquet/blob/master/example/column_read.go)|read raw column data and return value,repetitionLevel,definitionLevel|
+|[type.go](https://github.com/jimyag/go-parquet/blob/master/example/type.go)|example for schema of types|
+|[type_alias.go](https://github.com/jimyag/go-parquet/blob/master/example/type_alias.go)|example for type alias|
+|[writer.go](https://github.com/jimyag/go-parquet/blob/master/example/writer.go)|create ParquetWriter from io.Writer|
+|[keyvalue_metadata.go](https://github.com/jimyag/go-parquet/blob/master/example/keyvalue_metadata.go)|write keyvalue metadata|
+|[dot_in_name.go](https://github.com/jimyag/go-parquet/blob/master/example/dot_in_name.go)|`.` in filed name|
+|[arrow_to_parquet.go](https://github.com/jimyag/go-parquet/blob/master/example/arrow_to_parquet.go)|write/read parquet file using arrow definition|
 
 ## Tool
 
-* [parquet-tools](https://github.com/jimyag/parquet-go/blob/master/tool/parquet-tools): Command line tools that aid in the inspection of Parquet files
+* [parquet-tools](https://github.com/jimyag/go-parquet/blob/master/tool/parquet-tools): Command line tools that aid in the inspection of Parquet files
 
 Please start to use it and give feedback or just star it! Help is needed and anything is welcome.

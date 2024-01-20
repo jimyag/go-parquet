@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jimyag/parquet-go/parquet"
+	"github.com/jimyag/go-parquet/parquet"
 )
 
 func TestINT96(t *testing.T) {

@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/jimyag/parquet-go/layout"
-	"github.com/jimyag/parquet-go/marshal"
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/schema"
-	"github.com/jimyag/parquet-go/source"
-	"github.com/jimyag/parquet-go/source/writerfile"
-	"github.com/jimyag/parquet-go/types"
+	"github.com/jimyag/go-parquet/layout"
+	"github.com/jimyag/go-parquet/marshal"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/schema"
+	"github.com/jimyag/go-parquet/source"
+	"github.com/jimyag/go-parquet/source/writerfile"
+	"github.com/jimyag/go-parquet/types"
 )
 
 type CSVWriter struct {

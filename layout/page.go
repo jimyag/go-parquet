@@ -8,11 +8,11 @@ import (
 	"math/bits"
 
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/jimyag/parquet-go/common"
-	"github.com/jimyag/parquet-go/compress"
-	"github.com/jimyag/parquet-go/encoding"
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/schema"
+	"github.com/jimyag/go-parquet/common"
+	"github.com/jimyag/go-parquet/compress"
+	"github.com/jimyag/go-parquet/encoding"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/schema"
 )
 
 // Page is used to store the page data

@@ -6,11 +6,11 @@ import (
 	"unsafe"
 
 	"github.com/goccy/go-reflect"
-	"github.com/jimyag/parquet-go/common"
-	"github.com/jimyag/parquet-go/layout"
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/schema"
-	"github.com/jimyag/parquet-go/types"
+	"github.com/jimyag/go-parquet/common"
+	"github.com/jimyag/go-parquet/layout"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/schema"
+	"github.com/jimyag/go-parquet/types"
 )
 
 // MarshalFast implements the Marshal function while maximizing performance and minimizing

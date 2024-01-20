@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/reader"
-	"github.com/jimyag/parquet-go/source/local"
-	"github.com/jimyag/parquet-go/writer"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/reader"
+	"github.com/jimyag/go-parquet/source/local"
+	"github.com/jimyag/go-parquet/writer"
 )
 
 type NameString string

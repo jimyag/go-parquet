@@ -14,12 +14,12 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 
-	"github.com/jimyag/parquet-go/reader"
-	"github.com/jimyag/parquet-go/source"
-	"github.com/jimyag/parquet-go/source/local"
-	"github.com/jimyag/parquet-go/source/s3"
-	"github.com/jimyag/parquet-go/tool/parquet-tools/schematool"
-	"github.com/jimyag/parquet-go/tool/parquet-tools/sizetool"
+	"github.com/jimyag/go-parquet/reader"
+	"github.com/jimyag/go-parquet/source"
+	"github.com/jimyag/go-parquet/source/local"
+	"github.com/jimyag/go-parquet/source/s3"
+	"github.com/jimyag/go-parquet/tool/parquet-tools/schematool"
+	"github.com/jimyag/go-parquet/tool/parquet-tools/sizetool"
 )
 
 func main() {

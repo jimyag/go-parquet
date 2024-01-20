@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/request"
 	"github.com/golang/mock/gomock"
 
-	"github.com/jimyag/parquet-go/source/s3v2/mocks"
+	"github.com/jimyag/go-parquet/source/s3v2/mocks"
 )
 
 func TestSeek(t *testing.T) {

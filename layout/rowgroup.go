@@ -4,10 +4,10 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/jimyag/parquet-go/common"
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/schema"
-	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/go-parquet/common"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/schema"
+	"github.com/jimyag/go-parquet/source"
 )
 
 // RowGroup stores the RowGroup in parquet file

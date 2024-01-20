@@ -10,8 +10,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/jimyag/parquet-go/reader"
-	source "github.com/jimyag/parquet-go/source/http"
+	"github.com/jimyag/go-parquet/reader"
+	source "github.com/jimyag/go-parquet/source/http"
 )
 
 type Student struct {

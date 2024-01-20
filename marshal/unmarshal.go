@@ -5,10 +5,10 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/jimyag/parquet-go/common"
-	"github.com/jimyag/parquet-go/layout"
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/schema"
+	"github.com/jimyag/go-parquet/common"
+	"github.com/jimyag/go-parquet/layout"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/schema"
 )
 
 // Record Map KeyValue pair

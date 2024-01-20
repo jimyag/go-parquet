@@ -3,7 +3,7 @@ package sizetool
 import (
 	"fmt"
 
-	"github.com/jimyag/parquet-go/reader"
+	"github.com/jimyag/go-parquet/reader"
 )
 
 func GetParquetFileSize(name string, pr *reader.ParquetReader, pretty, uncompressedSize bool) string {

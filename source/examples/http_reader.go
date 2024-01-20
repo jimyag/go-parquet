@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jimyag/parquet-go/reader"
-	"github.com/jimyag/parquet-go/source/http"
+	"github.com/jimyag/go-parquet/reader"
+	"github.com/jimyag/go-parquet/source/http"
 )
 
 func main() {

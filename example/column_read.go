@@ -4,10 +4,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/jimyag/parquet-go/common"
-	"github.com/jimyag/parquet-go/reader"
-	"github.com/jimyag/parquet-go/source/local"
-	"github.com/jimyag/parquet-go/writer"
+	"github.com/jimyag/go-parquet/common"
+	"github.com/jimyag/go-parquet/reader"
+	"github.com/jimyag/go-parquet/source/local"
+	"github.com/jimyag/go-parquet/writer"
 )
 
 type Student struct {

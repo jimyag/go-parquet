@@ -5,7 +5,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/go-parquet/source"
 	"github.com/minio/minio-go/v7"
 )
 

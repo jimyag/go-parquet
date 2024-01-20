@@ -1,7 +1,7 @@
 package swiftsource
 
 import (
-	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/go-parquet/source"
 	"github.com/ncw/swift"
 )
 

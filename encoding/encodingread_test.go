@@ -9,7 +9,7 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/jimyag/parquet-go/parquet"
+	"github.com/jimyag/go-parquet/parquet"
 )
 
 func TestReadPlainBOOLEAN(t *testing.T) {

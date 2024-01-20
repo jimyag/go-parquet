@@ -11,9 +11,9 @@ import (
 	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/jimyag/parquet-go/reader"
-	"github.com/jimyag/parquet-go/source/buffer"
-	"github.com/jimyag/parquet-go/source/writerfile"
+	"github.com/jimyag/go-parquet/reader"
+	"github.com/jimyag/go-parquet/source/buffer"
+	"github.com/jimyag/go-parquet/source/writerfile"
 )
 
 // testSchema is schema for the testint table which covers all

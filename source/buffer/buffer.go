@@ -4,7 +4,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/go-parquet/source"
 )
 
 // BufferFile allows reading parquet messages from a memory buffer.

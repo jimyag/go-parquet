@@ -5,11 +5,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/jimyag/parquet-go/reader"
-	"github.com/jimyag/parquet-go/writer"
+	"github.com/jimyag/go-parquet/reader"
+	"github.com/jimyag/go-parquet/writer"
 	"github.com/ncw/swift"
 
-	swiftsource "github.com/jimyag/parquet-go/source/swift"
+	swiftsource "github.com/jimyag/go-parquet/source/swift"
 )
 
 type Student struct {

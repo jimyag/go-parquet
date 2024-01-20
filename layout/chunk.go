@@ -2,10 +2,10 @@ package layout
 
 import (
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/jimyag/parquet-go/common"
-	"github.com/jimyag/parquet-go/encoding"
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/schema"
+	"github.com/jimyag/go-parquet/common"
+	"github.com/jimyag/go-parquet/encoding"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/schema"
 )
 
 // Chunk stores the ColumnChunk in parquet file

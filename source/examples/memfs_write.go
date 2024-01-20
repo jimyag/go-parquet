@@ -7,11 +7,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/jimyag/parquet-go/parquet"
-	"github.com/jimyag/parquet-go/reader"
-	"github.com/jimyag/parquet-go/source/local"
-	"github.com/jimyag/parquet-go/source/mem"
-	"github.com/jimyag/parquet-go/writer"
+	"github.com/jimyag/go-parquet/parquet"
+	"github.com/jimyag/go-parquet/reader"
+	"github.com/jimyag/go-parquet/source/local"
+	"github.com/jimyag/go-parquet/source/mem"
+	"github.com/jimyag/go-parquet/writer"
 )
 
 type Student struct {

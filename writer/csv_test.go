@@ -3,7 +3,7 @@ package writer
 import (
 	"testing"
 
-	"github.com/jimyag/parquet-go/source/buffer"
+	"github.com/jimyag/go-parquet/source/buffer"
 )
 
 func BenchmarkWriteCSV(b *testing.B) {

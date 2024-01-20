@@ -8,7 +8,7 @@ import (
 	"io"
 	"sync"
 
-	"github.com/jimyag/parquet-go/parquet"
+	"github.com/jimyag/go-parquet/parquet"
 	"github.com/pierrec/lz4/v4"
 )
 

@@ -1,4 +1,4 @@
-module github.com/jimyag/parquet-go
+module github.com/jimyag/go-parquet
 
 go 1.16
 
