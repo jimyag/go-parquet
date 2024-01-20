@@ -24,7 +24,7 @@ The `example/` directory contains several examples.
 The `local_flat.go` example creates some data and writes it out to the `example/output/flat.parquet` file.
 
 ```sh
-cd $GOPATH/src/github.com/xitongsys/parquet-go/example
+cd $GOPATH/src/github.com/jimyag/parquet-go/example
 go run local_flat.go
 ```
 
@@ -32,22 +32,23 @@ The `local_flat.go` code shows how it's easy to output `structs` from Go program
 
 ## Type
 
-There are two types in Parquet: Primitive Type and Logical Type. Logical types are stored as primitive types. 
+There are two types in Parquet: Primitive Type and Logical Type. Logical types are stored as primitive types.
 
 ### Primitive Type
+
 |Primitive Type|Go Type|
 |-|-|
 |BOOLEAN|bool|
 |INT32|int32|
 |INT64|int64|
-|INT96([deprecated](https://github.com/xitongsys/parquet-go/issues/420))|string|
+|INT96([deprecated](https://github.com/jimyag/parquet-go/issues/420))|string|
 |FLOAT|float32|
 |DOUBLE|float64|
 |BYTE_ARRAY|string|
 |FIXED_LEN_BYTE_ARRAY|string|
 
-
 ### Logical Type
+
 |Logical Type|Primitive Type|Go Type|
 |-|-|-|
 |UTF8|BYTE_ARRAY|string|
@@ -70,29 +71,30 @@ There are two types in Parquet: Primitive Type and Logical Type. Logical types a
 |MAP|-|map||
 
 ### Tips
+
 * Parquet-go supports type alias such `type MyString string`. But the base type must follow the table instructions.
 
-* Some type convert functions: [converter.go](https://github.com/xitongsys/parquet-go/blob/master/types/converter.go)
+* Some type convert functions: [converter.go](https://github.com/jimyag/parquet-go/blob/master/types/converter.go)
 
 ## Encoding
 
-#### PLAIN:
+#### PLAIN
 
 All types
 
-#### PLAIN_DICTIONARY/RLE_DICTIONARY:
+#### PLAIN_DICTIONARY/RLE_DICTIONARY
 
 All types
 
-#### DELTA_BINARY_PACKED:
+#### DELTA_BINARY_PACKED
 
 INT32, INT64, INT_8, INT_16, INT_32, INT_64, UINT_8, UINT_16, UINT_32, UINT_64, TIME_MILLIS, TIME_MICROS, TIMESTAMP_MILLIS, TIMESTAMP_MICROS
 
-#### DELTA_BYTE_ARRAY:
+#### DELTA_BYTE_ARRAY
 
 BYTE_ARRAY, UTF8
 
-#### DELTA_LENGTH_BYTE_ARRAY:
+#### DELTA_LENGTH_BYTE_ARRAY
 
 BYTE_ARRAY, UTF8
 
@@ -120,46 +122,46 @@ There are three repetition types in Parquet: REQUIRED, OPTIONAL, REPEATED.
 ## Example of Type and Encoding
 
 ```golang
-	Bool              bool    `parquet:"name=bool, type=BOOLEAN"`
-	Int32             int32   `parquet:"name=int32, type=INT32"`
-	Int64             int64   `parquet:"name=int64, type=INT64"`
-	Int96             string  `parquet:"name=int96, type=INT96"`
-	Float             float32 `parquet:"name=float, type=FLOAT"`
-	Double            float64 `parquet:"name=double, type=DOUBLE"`
-	ByteArray         string  `parquet:"name=bytearray, type=BYTE_ARRAY"`
-	FixedLenByteArray string  `parquet:"name=FixedLenByteArray, type=FIXED_LEN_BYTE_ARRAY, length=10"`
+ Bool              bool    `parquet:"name=bool, type=BOOLEAN"`
+ Int32             int32   `parquet:"name=int32, type=INT32"`
+ Int64             int64   `parquet:"name=int64, type=INT64"`
+ Int96             string  `parquet:"name=int96, type=INT96"`
+ Float             float32 `parquet:"name=float, type=FLOAT"`
+ Double            float64 `parquet:"name=double, type=DOUBLE"`
+ ByteArray         string  `parquet:"name=bytearray, type=BYTE_ARRAY"`
+ FixedLenByteArray string  `parquet:"name=FixedLenByteArray, type=FIXED_LEN_BYTE_ARRAY, length=10"`
 
-	Utf8             string `parquet:"name=utf8, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
-	Int_8            int32   `parquet:"name=int_8, type=INT32, convertedtype=INT32, convertedtype=INT_8"`
-	Int_16           int32  `parquet:"name=int_16, type=INT32, convertedtype=INT_16"`
-	Int_32           int32  `parquet:"name=int_32, type=INT32, convertedtype=INT_32"`
-	Int_64           int64  `parquet:"name=int_64, type=INT64, convertedtype=INT_64"`
-	Uint_8           int32  `parquet:"name=uint_8, type=INT32, convertedtype=UINT_8"`
-	Uint_16          int32 `parquet:"name=uint_16, type=INT32, convertedtype=UINT_16"`
-	Uint_32          int32 `parquet:"name=uint_32, type=INT32, convertedtype=UINT_32"`
-	Uint_64          int64 `parquet:"name=uint_64, type=INT64, convertedtype=UINT_64"`
-	Date             int32  `parquet:"name=date, type=INT32, convertedtype=DATE"`
-	Date2            int32  `parquet:"name=date2, type=INT32, convertedtype=DATE, logicaltype=DATE"`
-	TimeMillis       int32  `parquet:"name=timemillis, type=INT32, convertedtype=TIME_MILLIS"`
-	TimeMillis2      int32  `parquet:"name=timemillis2, type=INT32, logicaltype=TIME, logicaltype.isadjustedtoutc=true, logicaltype.unit=MILLIS"`
-	TimeMicros       int64  `parquet:"name=timemicros, type=INT64, convertedtype=TIME_MICROS"`
-	TimeMicros2      int64  `parquet:"name=timemicros2, type=INT64, logicaltype=TIME, logicaltype.isadjustedtoutc=false, logicaltype.unit=MICROS"`
-	TimestampMillis  int64  `parquet:"name=timestampmillis, type=INT64, convertedtype=TIMESTAMP_MILLIS"`
-	TimestampMillis2 int64  `parquet:"name=timestampmillis2, type=INT64, logicaltype=TIMESTAMP, logicaltype.isadjustedtoutc=true, logicaltype.unit=MILLIS"`
-	TimestampMicros  int64  `parquet:"name=timestampmicros, type=INT64, convertedtype=TIMESTAMP_MICROS"`
-	TimestampMicros2 int64  `parquet:"name=timestampmicros2, type=INT64, logicaltype=TIMESTAMP, logicaltype.isadjustedtoutc=false, logicaltype.unit=MICROS"`
-	Interval         string `parquet:"name=interval, type=BYTE_ARRAY, convertedtype=INTERVAL"`
+ Utf8             string `parquet:"name=utf8, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
+ Int_8            int32   `parquet:"name=int_8, type=INT32, convertedtype=INT32, convertedtype=INT_8"`
+ Int_16           int32  `parquet:"name=int_16, type=INT32, convertedtype=INT_16"`
+ Int_32           int32  `parquet:"name=int_32, type=INT32, convertedtype=INT_32"`
+ Int_64           int64  `parquet:"name=int_64, type=INT64, convertedtype=INT_64"`
+ Uint_8           int32  `parquet:"name=uint_8, type=INT32, convertedtype=UINT_8"`
+ Uint_16          int32 `parquet:"name=uint_16, type=INT32, convertedtype=UINT_16"`
+ Uint_32          int32 `parquet:"name=uint_32, type=INT32, convertedtype=UINT_32"`
+ Uint_64          int64 `parquet:"name=uint_64, type=INT64, convertedtype=UINT_64"`
+ Date             int32  `parquet:"name=date, type=INT32, convertedtype=DATE"`
+ Date2            int32  `parquet:"name=date2, type=INT32, convertedtype=DATE, logicaltype=DATE"`
+ TimeMillis       int32  `parquet:"name=timemillis, type=INT32, convertedtype=TIME_MILLIS"`
+ TimeMillis2      int32  `parquet:"name=timemillis2, type=INT32, logicaltype=TIME, logicaltype.isadjustedtoutc=true, logicaltype.unit=MILLIS"`
+ TimeMicros       int64  `parquet:"name=timemicros, type=INT64, convertedtype=TIME_MICROS"`
+ TimeMicros2      int64  `parquet:"name=timemicros2, type=INT64, logicaltype=TIME, logicaltype.isadjustedtoutc=false, logicaltype.unit=MICROS"`
+ TimestampMillis  int64  `parquet:"name=timestampmillis, type=INT64, convertedtype=TIMESTAMP_MILLIS"`
+ TimestampMillis2 int64  `parquet:"name=timestampmillis2, type=INT64, logicaltype=TIMESTAMP, logicaltype.isadjustedtoutc=true, logicaltype.unit=MILLIS"`
+ TimestampMicros  int64  `parquet:"name=timestampmicros, type=INT64, convertedtype=TIMESTAMP_MICROS"`
+ TimestampMicros2 int64  `parquet:"name=timestampmicros2, type=INT64, logicaltype=TIMESTAMP, logicaltype.isadjustedtoutc=false, logicaltype.unit=MICROS"`
+ Interval         string `parquet:"name=interval, type=BYTE_ARRAY, convertedtype=INTERVAL"`
 
-	Decimal1 int32  `parquet:"name=decimal1, type=INT32, convertedtype=DECIMAL, scale=2, precision=9"`
-	Decimal2 int64  `parquet:"name=decimal2, type=INT64, convertedtype=DECIMAL, scale=2, precision=18"`
-	Decimal3 string `parquet:"name=decimal3, type=FIXED_LEN_BYTE_ARRAY, convertedtype=DECIMAL, scale=2, precision=10, length=12"`
-	Decimal4 string `parquet:"name=decimal4, type=BYTE_ARRAY, convertedtype=DECIMAL, scale=2, precision=20"`
+ Decimal1 int32  `parquet:"name=decimal1, type=INT32, convertedtype=DECIMAL, scale=2, precision=9"`
+ Decimal2 int64  `parquet:"name=decimal2, type=INT64, convertedtype=DECIMAL, scale=2, precision=18"`
+ Decimal3 string `parquet:"name=decimal3, type=FIXED_LEN_BYTE_ARRAY, convertedtype=DECIMAL, scale=2, precision=10, length=12"`
+ Decimal4 string `parquet:"name=decimal4, type=BYTE_ARRAY, convertedtype=DECIMAL, scale=2, precision=20"`
 
-	Decimal5 int32 `parquet:"name=decimal5, type=INT32, logicaltype=DECIMAL, logicaltype.precision=10, logicaltype.scale=2"`
+ Decimal5 int32 `parquet:"name=decimal5, type=INT32, logicaltype=DECIMAL, logicaltype.precision=10, logicaltype.scale=2"`
 
-	Map      map[string]int32 `parquet:"name=map, type=MAP, convertedtype=MAP, keytype=BYTE_ARRAY, keyconvertedtype=UTF8, valuetype=INT32"`
-	List     []string         `parquet:"name=list, type=MAP, convertedtype=LIST, valuetype=BYTE_ARRAY, valueconvertedtype=UTF8"`
-	Repeated []int32          `parquet:"name=repeated, type=INT32, repetitiontype=REPEATED"`
+ Map      map[string]int32 `parquet:"name=map, type=MAP, convertedtype=MAP, keytype=BYTE_ARRAY, keyconvertedtype=UTF8, valuetype=INT32"`
+ List     []string         `parquet:"name=list, type=MAP, convertedtype=LIST, valuetype=BYTE_ARRAY, valueconvertedtype=UTF8"`
+ Repeated []int32          `parquet:"name=repeated, type=INT32, repetitiontype=REPEATED"`
 ```
 
 ## Compression Type
@@ -180,12 +182,12 @@ Read/Write a parquet file need a ParquetFile interface implemented
 
 ```golang
 type ParquetFile interface {
-	io.Seeker
-	io.Reader
-	io.Writer
-	io.Closer
-	Open(name string) (ParquetFile, error)
-	Create(name string) (ParquetFile, error)
+ io.Seeker
+ io.Reader
+ io.Writer
+ io.Closer
+ Open(name string) (ParquetFile, error)
+ Create(name string) (ParquetFile, error)
 }
 ```
 
@@ -196,35 +198,36 @@ Using this interface, parquet-go can read/write parquet file on different platfo
 Four Writers are supported: ParquetWriter, JSONWriter, CSVWriter, ArrowWriter.
 
 * ParquetWriter is used to write predefined Golang structs.
-[Example of ParquetWriter](https://github.com/xitongsys/parquet-go/blob/master/example/local_flat.go)
+[Example of ParquetWriter](https://github.com/jimyag/parquet-go/blob/master/example/local_flat.go)
 
 * JSONWriter is used to write JSON strings
-[Example of JSONWriter](https://github.com/xitongsys/parquet-go/blob/master/example/json_write.go)
+[Example of JSONWriter](https://github.com/jimyag/parquet-go/blob/master/example/json_write.go)
 
 * CSVWriter is used to write data format similar with CSV(not nested)
-[Example of CSVWriter](https://github.com/xitongsys/parquet-go/blob/master/example/csv_write.go)
+[Example of CSVWriter](https://github.com/jimyag/parquet-go/blob/master/example/csv_write.go)
 
 * ArrowWriter is used to write parquet files using Arrow Schemas
-[Example of ArrowWriter](https://github.com/xitongsys/parquet-go/blob/master/example/arrow_to_parquet.go)
+[Example of ArrowWriter](https://github.com/jimyag/parquet-go/blob/master/example/arrow_to_parquet.go)
 
 ## Reader
 
 Two Readers are supported: ParquetReader, ColumnReader
 
 * ParquetReader is used to read predefined Golang structs
-[Example of ParquetReader](https://github.com/xitongsys/parquet-go/blob/master/example/local_nested.go)
+[Example of ParquetReader](https://github.com/jimyag/parquet-go/blob/master/example/local_nested.go)
 
 * ColumnReader is used to read raw column data. The read function return 3 slices([value], [RepetitionLevel], [DefinitionLevel]) of the records.
-[Example of ColumnReader](https://github.com/xitongsys/parquet-go/blob/master/example/column_read.go)
+[Example of ColumnReader](https://github.com/jimyag/parquet-go/blob/master/example/column_read.go)
 
 ### Tips
 
 * If the parquet file is very big (even the size of parquet file is small, the uncompressed size may be very large), please don't read all rows at one time, which may induce the OOM. You can read a small portion of the data at a time like a stream-oriented file.
 
 * `RowGroupSize` and `PageSize` may influence the final parquet file size. You can find the details from [here](https://github.com/apache/parquet-format). You can reset them in ParquetWriter
+
 ```go
-	pw.RowGroupSize = 128 * 1024 * 1024 // default 128M
-	pw.PageSize = 8 * 1024 // default 8K
+ pw.RowGroupSize = 128 * 1024 * 1024 // default 128M
+ pw.PageSize = 8 * 1024 // default 8K
 ```
 
 ## Schema
@@ -235,17 +238,17 @@ There are four methods to define the schema: go struct tags, Json, CSV, Arrow me
 
 ```golang
 type Student struct {
-	Name    string  `parquet:"name=name, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
-	Age     int32   `parquet:"name=age, type=INT32, encoding=PLAIN"`
-	Id      int64   `parquet:"name=id, type=INT64"`
-	Weight  float32 `parquet:"name=weight, type=FLOAT"`
-	Sex     bool    `parquet:"name=sex, type=BOOLEAN"`
-	Day     int32   `parquet:"name=day, type=INT32, convertedtype=DATE"`
-	Ignored int32   //without parquet tag and won't write
+ Name    string  `parquet:"name=name, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
+ Age     int32   `parquet:"name=age, type=INT32, encoding=PLAIN"`
+ Id      int64   `parquet:"name=id, type=INT64"`
+ Weight  float32 `parquet:"name=weight, type=FLOAT"`
+ Sex     bool    `parquet:"name=sex, type=BOOLEAN"`
+ Day     int32   `parquet:"name=day, type=INT32, convertedtype=DATE"`
+ Ignored int32   //without parquet tag and won't write
 }
 ```
 
-[Example of tags](https://github.com/xitongsys/parquet-go/blob/master/example/local_flat.go)
+[Example of tags](https://github.com/jimyag/parquet-go/blob/master/example/local_flat.go)
 
 ### JSON
 
@@ -253,23 +256,23 @@ JSON schema can be used to define some complicated schema, which can't be define
 
 ```golang
 type Student struct {
-	NameIn    string
-	Age     int32
-	Id      int64
-	Weight  float32
-	Sex     bool
-	Classes []string
-	Scores  map[string][]float32
-	Ignored string
+ NameIn    string
+ Age     int32
+ Id      int64
+ Weight  float32
+ Sex     bool
+ Classes []string
+ Scores  map[string][]float32
+ Ignored string
 
-	Friends []struct {
-		Name string
-		Id   int64
-	}
-	Teachers []struct {
-		Name string
-		Id   int64
-	}
+ Friends []struct {
+  Name string
+  Id   int64
+ }
+ Teachers []struct {
+  Name string
+  Id   int64
+ }
 }
 
 var jsonSchema string = `
@@ -318,44 +321,45 @@ var jsonSchema string = `
 }
 `
 ```
-[Example of JSON schema](https://github.com/xitongsys/parquet-go/blob/master/example/json_schema.go)
 
+[Example of JSON schema](https://github.com/jimyag/parquet-go/blob/master/example/json_schema.go)
 
 ### CSV metadata
 
 ```golang
-	md := []string{
-		"name=Name, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY",
-		"name=Age, type=INT32",
-		"name=Id, type=INT64",
-		"name=Weight, type=FLOAT",
-		"name=Sex, type=BOOLEAN",
-	}
+ md := []string{
+  "name=Name, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY",
+  "name=Age, type=INT32",
+  "name=Id, type=INT64",
+  "name=Weight, type=FLOAT",
+  "name=Sex, type=BOOLEAN",
+ }
 ```
 
-[Example of CSV metadata](https://github.com/xitongsys/parquet-go/blob/master/example/csv_write.go)
+[Example of CSV metadata](https://github.com/jimyag/parquet-go/blob/master/example/csv_write.go)
 
 ### Arrow metadata
 
 ```golang
-	schema := arrow.NewSchema(
-		[]arrow.Field{
-			{Name: "int64", Type: arrow.PrimitiveTypes.Int64},
-			{Name: "float64", Type: arrow.PrimitiveTypes.Float64},
-			{Name: "str", Type: arrow.BinaryTypes.String},
-		},
-		nil,
-	)
+ schema := arrow.NewSchema(
+  []arrow.Field{
+   {Name: "int64", Type: arrow.PrimitiveTypes.Int64},
+   {Name: "float64", Type: arrow.PrimitiveTypes.Float64},
+   {Name: "str", Type: arrow.BinaryTypes.String},
+  },
+  nil,
+ )
 ```
 
-[Example of Arrow metadata](https://github.com/xitongsys/parquet-go/blob/master/example/arrow_to_parquet.go)
+[Example of Arrow metadata](https://github.com/jimyag/parquet-go/blob/master/example/arrow_to_parquet.go)
 
 ### Tips
 
 * Parquet-go reads data as an object in Golang and every field must be a public field, which start with an upper letter. This field name we call it `InName`. Field name in parquet file we call it `ExName`. Function `common.HeadToUpper` converts `ExName` to `InName`. There are some restriction:
+
 1. It's not allowed if two field names are only different at their first letter case. Such as `name` and `Name`.
-2. `PARGO_PREFIX_` is a reserved string, which you'd better not use it as a name prefix. ([#294](https://github.com/xitongsys/parquet-go/issues/294))
-3. Use `\x01` as the delimiter of fields to support `.` in some field name.([dot_in_name.go](https://github.com/xitongsys/parquet-go/blob/master/example/dot_in_name.go), [#349](https://github.com/xitongsys/parquet-go/issues/349)) 
+2. `PARGO_PREFIX_` is a reserved string, which you'd better not use it as a name prefix. ([#294](https://github.com/jimyag/parquet-go/issues/294))
+3. Use `\x01` as the delimiter of fields to support `.` in some field name.([dot_in_name.go](https://github.com/jimyag/parquet-go/blob/master/example/dot_in_name.go), [#349](https://github.com/jimyag/parquet-go/issues/349))
 
 ## Concurrency
 
@@ -373,28 +377,26 @@ func NewArrowWriter(arrowSchema *arrow.Schema, pfile source.ParquetFile, np int6
 
 |Example file|Descriptions|
 |-|-|
-|[local_flat.go](https://github.com/xitongsys/parquet-go/blob/master/example/local_flat.go)|write/read parquet file with no nested struct|
-|[local_nested.go](https://github.com/xitongsys/parquet-go/blob/master/example/local_nested.go)|write/read parquet file with nested struct|
-|[read_partial.go](https://github.com/xitongsys/parquet-go/blob/master/example/read_partial.go)|read partial fields from a parquet file|
-|[read_partial2.go](https://github.com/xitongsys/parquet-go/blob/master/example/read_partial2.go)|read sub-struct from a parquet file|
-|[read_without_schema_predefined.go](https://github.com/xitongsys/parquet-go/blob/master/example/read_without_schema_predefined.go)|read a parquet file and no struct/schema predefined needed|
-|[read_partial_without_schema_predefined.go](https://github.com/xitongsys/parquet-go/blob/master/example/read_partial_without_schema_predefined.go)|read sub-struct from a parquet file and no struct/schema predefined needed|
-|[json_schema.go](https://github.com/xitongsys/parquet-go/blob/master/example/json_schema.go)|define schema using json string|
-|[json_write.go](https://github.com/xitongsys/parquet-go/blob/master/example/json_write.go)|convert json to parquet|
-|[convert_to_json.go](https://github.com/xitongsys/parquet-go/blob/master/example/convert_to_json.go)|convert parquet to json|
-|[csv_write.go](https://github.com/xitongsys/parquet-go/blob/master/example/csv_write.go)|special csv writer|
-|[column_read.go](https://github.com/xitongsys/parquet-go/blob/master/example/column_read.go)|read raw column data and return value,repetitionLevel,definitionLevel|
-|[type.go](https://github.com/xitongsys/parquet-go/blob/master/example/type.go)|example for schema of types|
-|[type_alias.go](https://github.com/xitongsys/parquet-go/blob/master/example/type_alias.go)|example for type alias|
-|[writer.go](https://github.com/xitongsys/parquet-go/blob/master/example/writer.go)|create ParquetWriter from io.Writer|
-|[keyvalue_metadata.go](https://github.com/xitongsys/parquet-go/blob/master/example/keyvalue_metadata.go)|write keyvalue metadata|
-|[dot_in_name.go](https://github.com/xitongsys/parquet-go/blob/master/example/dot_in_name.go)|`.` in filed name|
-|[arrow_to_parquet.go](https://github.com/xitongsys/parquet-go/blob/master/example/arrow_to_parquet.go)|write/read parquet file using arrow definition|
-
-
+|[local_flat.go](https://github.com/jimyag/parquet-go/blob/master/example/local_flat.go)|write/read parquet file with no nested struct|
+|[local_nested.go](https://github.com/jimyag/parquet-go/blob/master/example/local_nested.go)|write/read parquet file with nested struct|
+|[read_partial.go](https://github.com/jimyag/parquet-go/blob/master/example/read_partial.go)|read partial fields from a parquet file|
+|[read_partial2.go](https://github.com/jimyag/parquet-go/blob/master/example/read_partial2.go)|read sub-struct from a parquet file|
+|[read_without_schema_predefined.go](https://github.com/jimyag/parquet-go/blob/master/example/read_without_schema_predefined.go)|read a parquet file and no struct/schema predefined needed|
+|[read_partial_without_schema_predefined.go](https://github.com/jimyag/parquet-go/blob/master/example/read_partial_without_schema_predefined.go)|read sub-struct from a parquet file and no struct/schema predefined needed|
+|[json_schema.go](https://github.com/jimyag/parquet-go/blob/master/example/json_schema.go)|define schema using json string|
+|[json_write.go](https://github.com/jimyag/parquet-go/blob/master/example/json_write.go)|convert json to parquet|
+|[convert_to_json.go](https://github.com/jimyag/parquet-go/blob/master/example/convert_to_json.go)|convert parquet to json|
+|[csv_write.go](https://github.com/jimyag/parquet-go/blob/master/example/csv_write.go)|special csv writer|
+|[column_read.go](https://github.com/jimyag/parquet-go/blob/master/example/column_read.go)|read raw column data and return value,repetitionLevel,definitionLevel|
+|[type.go](https://github.com/jimyag/parquet-go/blob/master/example/type.go)|example for schema of types|
+|[type_alias.go](https://github.com/jimyag/parquet-go/blob/master/example/type_alias.go)|example for type alias|
+|[writer.go](https://github.com/jimyag/parquet-go/blob/master/example/writer.go)|create ParquetWriter from io.Writer|
+|[keyvalue_metadata.go](https://github.com/jimyag/parquet-go/blob/master/example/keyvalue_metadata.go)|write keyvalue metadata|
+|[dot_in_name.go](https://github.com/jimyag/parquet-go/blob/master/example/dot_in_name.go)|`.` in filed name|
+|[arrow_to_parquet.go](https://github.com/jimyag/parquet-go/blob/master/example/arrow_to_parquet.go)|write/read parquet file using arrow definition|
 
 ## Tool
 
-* [parquet-tools](https://github.com/xitongsys/parquet-go/blob/master/tool/parquet-tools): Command line tools that aid in the inspection of Parquet files
+* [parquet-tools](https://github.com/jimyag/parquet-go/blob/master/tool/parquet-tools): Command line tools that aid in the inspection of Parquet files
 
 Please start to use it and give feedback or just star it! Help is needed and anything is welcome.

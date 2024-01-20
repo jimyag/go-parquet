@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/xitongsys/parquet-go-source/local"
-	"github.com/xitongsys/parquet-go/parquet"
-	"github.com/xitongsys/parquet-go/reader"
-	"github.com/xitongsys/parquet-go/writer"
+	"github.com/jimyag/parquet-go/parquet"
+	"github.com/jimyag/parquet-go/reader"
+	"github.com/jimyag/parquet-go/source/local"
+	"github.com/jimyag/parquet-go/writer"
 )
 
 type DateItem struct {
