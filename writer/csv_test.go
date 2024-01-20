@@ -3,7 +3,7 @@ package writer
 import (
 	"testing"
 
-	"github.com/xitongsys/parquet-go-source/buffer"
+	"github.com/jimyag/parquet-go/source/buffer"
 )
 
 func BenchmarkWriteCSV(b *testing.B) {
@@ -15,10 +15,7 @@ func BenchmarkWriteCSV(b *testing.B) {
 		"name=BirthCity, type=UTF8, encoding=PLAIN",
 	}
 	for i := 0; i < b.N; i++ {
-		fw, err := buffer.NewBufferFile(nil)
-		if err != nil {
-			b.Fatal(err)
-		}
+		fw := buffer.NewBufferFile()
 		pw, err := NewCSVWriter(md, fw, 2)
 		if err != nil {
 			b.Fatal(err)
@@ -46,10 +43,7 @@ func BenchmarkWriteCSVPlainDictionary(b *testing.B) {
 		"name=BirthCity, type=UTF8, encoding=PLAIN_DICTIONARY",
 	}
 	for i := 0; i < b.N; i++ {
-		fw, err := buffer.NewBufferFile(nil)
-		if err != nil {
-			b.Fatal(err)
-		}
+		fw := buffer.NewBufferFile()
 		pw, err := NewCSVWriter(md, fw, 2)
 		if err != nil {
 			b.Fatal(err)

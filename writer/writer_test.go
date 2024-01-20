@@ -9,11 +9,12 @@ import (
 
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/stretchr/testify/assert"
-	"github.com/xitongsys/parquet-go-source/buffer"
-	"github.com/xitongsys/parquet-go-source/writerfile"
-	"github.com/xitongsys/parquet-go/parquet"
-	"github.com/xitongsys/parquet-go/reader"
-	"github.com/xitongsys/parquet-go/source"
+
+	"github.com/jimyag/parquet-go/parquet"
+	"github.com/jimyag/parquet-go/reader"
+	"github.com/jimyag/parquet-go/source"
+	"github.com/jimyag/parquet-go/source/buffer"
+	"github.com/jimyag/parquet-go/source/writerfile"
 )
 
 // TestNullCountsFromColumnIndex tests that NullCounts is correctly set in the ColumnIndex.
@@ -46,8 +47,9 @@ func TestNullCountsFromColumnIndex(t *testing.T) {
 	}
 	assert.NoError(t, pw.WriteStop())
 
-	pf, err := buffer.NewBufferFile(buf.Bytes())
-	assert.Nil(t, err)
+	pf := buffer.NewBufferFile()
+	_, err = pf.Write(buf.Bytes())
+	assert.NoError(t, err)
 	defer func() {
 		assert.NoError(t, pf.Close())
 	}()
@@ -99,9 +101,9 @@ func TestAllNullCountsFromColumnIndex(t *testing.T) {
 		assert.NoError(t, pw.Write(entry))
 	}
 	assert.NoError(t, pw.WriteStop())
-
-	pf, err := buffer.NewBufferFile(buf.Bytes())
-	assert.Nil(t, err)
+	pf := buffer.NewBufferFile()
+	_, err = pf.Write(buf.Bytes())
+	assert.NoError(t, err)
 	defer func() {
 		assert.NoError(t, pf.Close())
 	}()
@@ -162,7 +164,8 @@ func TestZeroRows(t *testing.T) {
 	assert.NoError(t, fw.Close())
 
 	// read
-	pf, err := buffer.NewBufferFile(buf.Bytes())
+	pf := buffer.NewBufferFile()
+	_, err = pf.Write(buf.Bytes())
 	assert.NoError(t, err)
 	defer func() {
 		assert.NoError(t, pf.Close())
@@ -206,7 +209,8 @@ func TestDoubleWriteStop(t *testing.T) {
 	assert.NoError(t, fw.Close())
 
 	// read
-	pf, err := buffer.NewBufferFile(buf.Bytes())
+	pf := buffer.NewBufferFile()
+	_, err = pf.Write(buf.Bytes())
 	assert.NoError(t, err)
 	defer func() {
 		assert.NoError(t, pf.Close())
