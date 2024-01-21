@@ -14,26 +14,26 @@ func NewWriterFile(writer io.Writer) source.ParquetFile {
 	return &WriterFile{Writer: writer}
 }
 
-func (self *WriterFile) Create(name string) (source.ParquetFile, error) {
-	return self, nil
+func (w *WriterFile) Create(name string) (source.ParquetFile, error) {
+	return w, nil
 }
 
-func (self *WriterFile) Open(name string) (source.ParquetFile, error) {
-	return self, nil
+func (w *WriterFile) Open(name string) (source.ParquetFile, error) {
+	return w, nil
 }
 
-func (self *WriterFile) Seek(offset int64, pos int) (int64, error) {
+func (w *WriterFile) Seek(offset int64, pos int) (int64, error) {
 	return 0, nil
 }
 
-func (self *WriterFile) Read(b []byte) (int, error) {
+func (w *WriterFile) Read(b []byte) (int, error) {
 	return 0, nil
 }
 
-func (self *WriterFile) Write(b []byte) (int, error) {
-	return self.Writer.Write(b)
+func (w *WriterFile) Write(b []byte) (int, error) {
+	return w.Writer.Write(b)
 }
 
-func (self *WriterFile) Close() error {
+func (w *WriterFile) Close() error {
 	return nil
 }

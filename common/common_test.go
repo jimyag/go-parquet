@@ -52,8 +52,8 @@ func TestCmpIntBinary(t *testing.T) {
 		abuf, bbuf := new(bytes.Buffer), new(bytes.Buffer)
 		binary.Write(abuf, binary.LittleEndian, c.numa)
 		binary.Write(bbuf, binary.LittleEndian, c.numb)
-		as, bs := string(abuf.Bytes()), string(bbuf.Bytes())
-		if (c.numa < c.numb) != (CmpIntBinary(as, bs, "LittleEndian", true)) {
+		as, bs := abuf.String(), bbuf.String()
+		if (c.numa < c.numb) != CmpIntBinary(as, bs, "LittleEndian", true) {
 			t.Errorf("CmpIntBinary error, %v-%v", c.numa, c.numb)
 		}
 	}
@@ -81,7 +81,7 @@ func TestCmpIntBinary(t *testing.T) {
 		an, bn := 0, 0
 		fmt.Sscanf(c.numa, "%d", &an)
 		fmt.Sscanf(c.numb, "%d", &bn)
-		if (an < bn) != (CmpIntBinary(as, bs, "LittleEndian", true)) {
+		if (an < bn) != CmpIntBinary(as, bs, "LittleEndian", true) {
 			t.Errorf("CmpIntBinary error, %v-%v", c.numa, c.numb)
 		}
 	}
@@ -106,7 +106,7 @@ func TestCmpIntBinary(t *testing.T) {
 		an, bn := uint64(0), uint64(0)
 		fmt.Sscanf(c.numa, "%d", &an)
 		fmt.Sscanf(c.numb, "%d", &bn)
-		if (an < bn) != (CmpIntBinary(as, bs, "LittleEndian", false)) {
+		if (an < bn) != CmpIntBinary(as, bs, "LittleEndian", false) {
 			t.Errorf("CmpIntBinary error, %v-%v", c.numa, c.numb)
 		}
 	}

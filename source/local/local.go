@@ -19,7 +19,7 @@ func NewLocalFileReader(name string) (source.ParquetFile, error) {
 	return (&LocalFile{}).Open(name)
 }
 
-func (self *LocalFile) Create(name string) (source.ParquetFile, error) {
+func (f *LocalFile) Create(name string) (source.ParquetFile, error) {
 	file, err := os.Create(name)
 	myFile := new(LocalFile)
 	myFile.FilePath = name
@@ -27,12 +27,12 @@ func (self *LocalFile) Create(name string) (source.ParquetFile, error) {
 	return myFile, err
 }
 
-func (self *LocalFile) Open(name string) (source.ParquetFile, error) {
+func (f *LocalFile) Open(name string) (source.ParquetFile, error) {
 	var (
 		err error
 	)
 	if name == "" {
-		name = self.FilePath
+		name = f.FilePath
 	}
 
 	myFile := new(LocalFile)
@@ -40,15 +40,15 @@ func (self *LocalFile) Open(name string) (source.ParquetFile, error) {
 	myFile.File, err = os.Open(name)
 	return myFile, err
 }
-func (self *LocalFile) Seek(offset int64, pos int) (int64, error) {
-	return self.File.Seek(offset, pos)
+func (f *LocalFile) Seek(offset int64, pos int) (int64, error) {
+	return f.File.Seek(offset, pos)
 }
 
-func (self *LocalFile) Read(b []byte) (cnt int, err error) {
+func (f *LocalFile) Read(b []byte) (cnt int, err error) {
 	var n int
 	ln := len(b)
 	for cnt < ln {
-		n, err = self.File.Read(b[cnt:])
+		n, err = f.File.Read(b[cnt:])
 		cnt += n
 		if err != nil {
 			break
@@ -57,10 +57,10 @@ func (self *LocalFile) Read(b []byte) (cnt int, err error) {
 	return cnt, err
 }
 
-func (self *LocalFile) Write(b []byte) (n int, err error) {
-	return self.File.Write(b)
+func (f *LocalFile) Write(b []byte) (n int, err error) {
+	return f.File.Write(b)
 }
 
-func (self *LocalFile) Close() error {
-	return self.File.Close()
+func (f *LocalFile) Close() error {
+	return f.File.Close()
 }

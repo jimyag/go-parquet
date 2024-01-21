@@ -34,11 +34,11 @@ func NewHdfsFileReader(hosts []string, user string, name string) (source.Parquet
 	return res.Open(name)
 }
 
-func (self *HdfsFile) Create(name string) (source.ParquetFile, error) {
+func (f *HdfsFile) Create(name string) (source.ParquetFile, error) {
 	var err error
 	hf := new(HdfsFile)
-	hf.Hosts = self.Hosts
-	hf.User = self.User
+	hf.Hosts = f.Hosts
+	hf.User = f.User
 	hf.Client, err = hdfs.NewClient(hdfs.ClientOptions{
 		Addresses: hf.Hosts,
 		User:      hf.User,
@@ -51,17 +51,17 @@ func (self *HdfsFile) Create(name string) (source.ParquetFile, error) {
 	return hf, err
 
 }
-func (self *HdfsFile) Open(name string) (source.ParquetFile, error) {
+func (f *HdfsFile) Open(name string) (source.ParquetFile, error) {
 	var (
 		err error
 	)
 	if name == "" {
-		name = self.FilePath
+		name = f.FilePath
 	}
 
 	hf := new(HdfsFile)
-	hf.Hosts = self.Hosts
-	hf.User = self.User
+	hf.Hosts = f.Hosts
+	hf.User = f.User
 	hf.Client, err = hdfs.NewClient(hdfs.ClientOptions{
 		Addresses: hf.Hosts,
 		User:      hf.User,
@@ -73,15 +73,15 @@ func (self *HdfsFile) Open(name string) (source.ParquetFile, error) {
 	hf.FileReader, err = hf.Client.Open(name)
 	return hf, err
 }
-func (self *HdfsFile) Seek(offset int64, pos int) (int64, error) {
-	return self.FileReader.Seek(offset, pos)
+func (f *HdfsFile) Seek(offset int64, pos int) (int64, error) {
+	return f.FileReader.Seek(offset, pos)
 }
 
-func (self *HdfsFile) Read(b []byte) (cnt int, err error) {
+func (f *HdfsFile) Read(b []byte) (cnt int, err error) {
 	var n int
 	ln := len(b)
 	for cnt < ln {
-		n, err = self.FileReader.Read(b[cnt:])
+		n, err = f.FileReader.Read(b[cnt:])
 		cnt += n
 		if err != nil {
 			break
@@ -90,19 +90,19 @@ func (self *HdfsFile) Read(b []byte) (cnt int, err error) {
 	return cnt, err
 }
 
-func (self *HdfsFile) Write(b []byte) (n int, err error) {
-	return self.FileWriter.Write(b)
+func (f *HdfsFile) Write(b []byte) (n int, err error) {
+	return f.FileWriter.Write(b)
 }
 
-func (self *HdfsFile) Close() error {
-	if self.FileReader != nil {
-		self.FileReader.Close()
+func (f *HdfsFile) Close() error {
+	if f.FileReader != nil {
+		f.FileReader.Close()
 	}
-	if self.FileWriter != nil {
-		self.FileWriter.Close()
+	if f.FileWriter != nil {
+		f.FileWriter.Close()
 	}
-	if self.Client != nil {
-		self.Client.Close()
+	if f.Client != nil {
+		f.Client.Close()
 	}
 	return nil
 }

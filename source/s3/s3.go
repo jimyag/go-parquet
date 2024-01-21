@@ -15,6 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3iface"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+
 	"github.com/jimyag/go-parquet/source"
 )
 
@@ -56,7 +57,6 @@ const (
 var (
 	errWhence        = errors.New("Seek: invalid whence")
 	errInvalidOffset = errors.New("Seek: invalid offset")
-	errFailedUpload  = errors.New("Write: failed upload")
 	activeS3Session  *session.Session
 	sessLock         sync.Mutex
 )

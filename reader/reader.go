@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/apache/thrift/lib/go/thrift"
+
 	"github.com/jimyag/go-parquet/common"
 	"github.com/jimyag/go-parquet/layout"
 	"github.com/jimyag/go-parquet/marshal"
@@ -142,7 +143,7 @@ func (pr *ParquetReader) ReadFooter() error {
 		return err
 	}
 	pr.Footer = parquet.NewFileMetaData()
-	pf := thrift.NewTCompactProtocolFactory()
+	pf := thrift.NewTCompactProtocolFactoryConf(&thrift.TConfiguration{})
 	thriftReader := thrift.NewStreamTransportR(pr.PFile)
 	bufferReader := thrift.NewTBufferedTransport(thriftReader, int(size))
 	protocol := pf.GetProtocol(bufferReader)
@@ -182,7 +183,7 @@ func (pr *ParquetReader) SkipRows(num int64) error {
 		}()
 	}
 
-	for key, _ := range pr.ColumnBuffers {
+	for key := range pr.ColumnBuffers {
 		taskChan <- key
 	}
 
@@ -301,7 +302,7 @@ func (pr *ParquetReader) read(dstInterface interface{}, prefixPath string) error
 	}
 
 	readNum := 0
-	for key, _ := range pr.ColumnBuffers {
+	for key := range pr.ColumnBuffers {
 		if strings.HasPrefix(key, prefixPath) {
 			taskChan <- key
 			readNum++

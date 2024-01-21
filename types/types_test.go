@@ -92,7 +92,7 @@ func TestStrIntToBinary(t *testing.T) {
 		} else {
 			binary.Write(buf, binary.BigEndian, c.num)
 		}
-		expect := string(buf.Bytes())
+		expect := buf.String()
 
 		res := StrIntToBinary(c.nums, c.order, c.length, c.signed)
 

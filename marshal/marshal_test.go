@@ -8,7 +8,7 @@ import (
 )
 
 type marshalCases struct {
-	nullPtr    *int
+	nullPtr    *int //lint:ignore U1000 ignore unused
 	integerPtr *int
 }
 
@@ -45,8 +45,6 @@ func TestParquetPtrMarshal(t *testing.T) {
 		t.Errorf("Fail expect nodes len %v, DL value %v, get nodes len %v, DL value %v", 1, 4, len(res), res[0].DL)
 	}
 }
-
-var iface interface{}
 
 func TestMarshalFast(t *testing.T) {
 

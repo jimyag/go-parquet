@@ -5,8 +5,9 @@ import (
 	"errors"
 	"io"
 
-	"github.com/jimyag/go-parquet/source"
 	"github.com/minio/minio-go/v7"
+
+	"github.com/jimyag/go-parquet/source"
 )
 
 // MinioFile is ParquetFile for MinIO S3 API
@@ -32,7 +33,6 @@ type MinioFile struct {
 var (
 	errWhence        = errors.New("Seek: invalid whence")
 	errInvalidOffset = errors.New("Seek: invalid offset")
-	errFailedUpload  = errors.New("Write: failed upload")
 )
 
 // NewS3FileWriterWithClient is the same as NewMinioFileWriter but allows passing

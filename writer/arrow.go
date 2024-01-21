@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/apache/arrow/go/v12/arrow"
+
 	"github.com/jimyag/go-parquet/common"
 	"github.com/jimyag/go-parquet/layout"
 	"github.com/jimyag/go-parquet/marshal"
@@ -34,7 +35,7 @@ func NewArrowWriter(arrowSchema *arrow.Schema, pfile source.ParquetFile,
 	res := new(ArrowWriter)
 	res.SchemaHandler, err = schema.NewSchemaHandlerFromArrow(arrowSchema)
 	if err != nil {
-		return res, fmt.Errorf("Unable to create schema from arrow definition: %s",
+		return res, fmt.Errorf("unable to create schema from arrow definition: %s",
 			err.Error())
 	}
 

@@ -134,7 +134,7 @@ func (s *AzBlockBlob) Seek(offset int64, whence int) (int64, error) {
 
 	switch whence {
 	case io.SeekStart:
-		offset = offset
+		// offset = offset
 	case io.SeekCurrent:
 		offset = s.offset + offset
 	case io.SeekEnd:

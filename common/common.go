@@ -528,7 +528,6 @@ func DeepCopy(src, dst interface{}) {
 	var buf bytes.Buffer
 	gob.NewEncoder(&buf).Encode(src)
 	gob.NewDecoder(bytes.NewBuffer(buf.Bytes())).Decode(dst)
-	return
 }
 
 // Get key tag map for map
@@ -799,7 +798,7 @@ func Max(table FuncTable, a interface{}, b interface{}) interface{} {
 
 type boolFuncTable struct{}
 
-func (_ boolFuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table boolFuncTable) LessThan(a interface{}, b interface{}) bool {
 	return !a.(bool) && b.(bool)
 }
 
@@ -809,7 +808,7 @@ func (table boolFuncTable) MinMaxSize(minVal interface{}, maxVal interface{}, va
 
 type int32FuncTable struct{}
 
-func (_ int32FuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table int32FuncTable) LessThan(a interface{}, b interface{}) bool {
 	return a.(int32) < b.(int32)
 }
 
@@ -819,7 +818,7 @@ func (table int32FuncTable) MinMaxSize(minVal interface{}, maxVal interface{}, v
 
 type uint32FuncTable struct{}
 
-func (_ uint32FuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table uint32FuncTable) LessThan(a interface{}, b interface{}) bool {
 	return uint32(a.(int32)) < uint32(b.(int32))
 }
 
@@ -829,7 +828,7 @@ func (table uint32FuncTable) MinMaxSize(minVal interface{}, maxVal interface{}, 
 
 type int64FuncTable struct{}
 
-func (_ int64FuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table int64FuncTable) LessThan(a interface{}, b interface{}) bool {
 	return a.(int64) < b.(int64)
 }
 
@@ -839,7 +838,7 @@ func (table int64FuncTable) MinMaxSize(minVal interface{}, maxVal interface{}, v
 
 type uint64FuncTable struct{}
 
-func (_ uint64FuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table uint64FuncTable) LessThan(a interface{}, b interface{}) bool {
 	return uint64(a.(int64)) < uint64(b.(int64))
 }
 
@@ -849,7 +848,7 @@ func (table uint64FuncTable) MinMaxSize(minVal interface{}, maxVal interface{}, 
 
 type int96FuncTable struct{}
 
-func (_ int96FuncTable) LessThan(ai interface{}, bi interface{}) bool {
+func (table int96FuncTable) LessThan(ai interface{}, bi interface{}) bool {
 	a, b := []byte(ai.(string)), []byte(bi.(string))
 	fa, fb := a[11]>>7, b[11]>>7
 	if fa > fb {
@@ -873,7 +872,7 @@ func (table int96FuncTable) MinMaxSize(minVal interface{}, maxVal interface{}, v
 
 type float32FuncTable struct{}
 
-func (_ float32FuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table float32FuncTable) LessThan(a interface{}, b interface{}) bool {
 	return a.(float32) < b.(float32)
 }
 
@@ -883,7 +882,7 @@ func (table float32FuncTable) MinMaxSize(minVal interface{}, maxVal interface{},
 
 type float64FuncTable struct{}
 
-func (_ float64FuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table float64FuncTable) LessThan(a interface{}, b interface{}) bool {
 	return a.(float64) < b.(float64)
 }
 
@@ -893,7 +892,7 @@ func (table float64FuncTable) MinMaxSize(minVal interface{}, maxVal interface{},
 
 type stringFuncTable struct{}
 
-func (_ stringFuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table stringFuncTable) LessThan(a interface{}, b interface{}) bool {
 	return a.(string) < b.(string)
 }
 
@@ -903,7 +902,7 @@ func (table stringFuncTable) MinMaxSize(minVal interface{}, maxVal interface{}, 
 
 type intervalFuncTable struct{}
 
-func (_ intervalFuncTable) LessThan(ai interface{}, bi interface{}) bool {
+func (table intervalFuncTable) LessThan(ai interface{}, bi interface{}) bool {
 	a, b := []byte(ai.(string)), []byte(bi.(string))
 	for i := 11; i >= 0; i-- {
 		if a[i] > b[i] {
@@ -921,7 +920,7 @@ func (table intervalFuncTable) MinMaxSize(minVal interface{}, maxVal interface{}
 
 type decimalStringFuncTable struct{}
 
-func (_ decimalStringFuncTable) LessThan(a interface{}, b interface{}) bool {
+func (table decimalStringFuncTable) LessThan(a interface{}, b interface{}) bool {
 	return CmpIntBinary(a.(string), b.(string), "BigEndian", true)
 }
 

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/goccy/go-reflect"
+
 	"github.com/jimyag/go-parquet/common"
 	"github.com/jimyag/go-parquet/layout"
 	"github.com/jimyag/go-parquet/parquet"
@@ -139,8 +140,7 @@ func (c *compiler) terminalEncoder(typ reflect.Type, pathMap *schema.PathMapType
 }
 
 func (c *compiler) compilePointer(typ reflect.Type, pathMap *schema.PathMapType) encoder {
-	var valEncoder encoder
-	valEncoder = c.getEncoder(typ.Elem(), pathMap)
+	valEncoder := c.getEncoder(typ.Elem(), pathMap)
 	return &pointerEncoder{valEncoder}
 }
 

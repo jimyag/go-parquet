@@ -131,7 +131,7 @@ func MarshalJSON(ss []interface{}, schemaHandler *schema.SchemaHandler) (tb *map
 						//ExName to InName
 						keysMap[common.StringToVariableName(keys[j].String())] = j
 					}
-					for key, _ := range node.PathMap.Children {
+					for key := range node.PathMap.Children {
 						ki, ok := keysMap[key]
 
 						if ok && node.Val.MapIndex(keys[ki]).Elem().IsValid() {

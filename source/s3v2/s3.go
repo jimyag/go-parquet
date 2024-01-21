@@ -65,7 +65,6 @@ const (
 var (
 	errWhence        = errors.New("Seek: invalid whence")
 	errInvalidOffset = errors.New("Seek: invalid offset")
-	errFailedUpload  = errors.New("Write: failed upload")
 )
 
 // NewS3FileWriter creates an S3 FileWriter, to be used with NewParquetWriter

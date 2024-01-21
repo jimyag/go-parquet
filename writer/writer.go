@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/apache/thrift/lib/go/thrift"
+
 	"github.com/jimyag/go-parquet/common"
 	"github.com/jimyag/go-parquet/layout"
 	"github.com/jimyag/go-parquet/marshal"
@@ -150,7 +151,7 @@ func (pw *ParquetWriter) WriteStop() error {
 		return err
 	}
 	ts := thrift.NewTSerializer()
-	ts.Protocol = thrift.NewTCompactProtocolFactory().GetProtocol(ts.Transport)
+	ts.Protocol = thrift.NewTCompactProtocolFactoryConf(&thrift.TConfiguration{}).GetProtocol(ts.Transport)
 	pw.RenameSchema()
 
 	// write ColumnIndex

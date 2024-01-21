@@ -3,12 +3,14 @@ package encoding
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
+	"errors"
 	"io"
 	"math"
 
 	"github.com/jimyag/go-parquet/parquet"
 )
+
+var ErrUnknownParquetType = errors.New("unknown parquet type")
 
 func ReadPlain(bytesReader *bytes.Reader, dataType parquet.Type, cnt uint64, bitWidth uint64) ([]interface{}, error) {
 	if dataType == parquet.Type_BOOLEAN {
@@ -28,7 +30,7 @@ func ReadPlain(bytesReader *bytes.Reader, dataType parquet.Type, cnt uint64, bit
 	} else if dataType == parquet.Type_FIXED_LEN_BYTE_ARRAY {
 		return ReadPlainFIXED_LEN_BYTE_ARRAY(bytesReader, cnt, bitWidth)
 	} else {
-		return nil, fmt.Errorf("Unknown parquet type")
+		return nil, ErrUnknownParquetType
 	}
 }
 
