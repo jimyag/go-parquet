@@ -2,45 +2,41 @@
 
 [![godoc for jimyag/go-parquet](https://godoc.org/github.com/nathany/looper?status.svg)](http://godoc.org/github.com/jimyag/go-parquet)
 
-[中文版](./README-zh.md)
+[English](./README.md)
 
-go-parquet is a pure-go implementation of reading and writing the parquet format file.
+go-parquet 是一个纯go实现的读写parquet格式文件 。
 
-Fork from [parquet-go](https://github.com/xitongsys/parquet-go) and fix some bugs.
-
-* Support Read/Write Nested/Flat Parquet File
-* Simple to use
-* High performance
-
-## Install
+基于 [parquet-go](https://github.com/xitongsys/parquet-go) 并做了一些改进增强。
 
 ```sh
-go get -u   github.com/jimyag/go-parqueto
+* 支持读写带有嵌套结构的Parquet文件
+* 简单易用
+* 高性能
 ```
 
-## Examples
+## 安装
 
-The `example/` directory contains several examples.
+```sh
+go get -u   github.com/jimyag/go-parquet
+```
+
+## 例子
+
+`example/` 目录包含多个示例。
 
 The `local_flat.go` example creates some data and writes it out to the `example/output/flat.parquet` file.
+
+`local_flat.go`示例创建了一些数据，并将其写入`example/output/flat.parquet`文件。
 
 ```sh
 cd example
 go run local_flat.go
 ```
 
-The `local_flat.go` code shows how it's easy to output `structs` from Go programs to Parquet files.
+`local_flat.go`代码展示了如何轻松地将 Go 程序中的结构体写入到 Parquet 文件。
 
 ## Type
 
-There are two types in Parquet: Primitive Type and Logical Type. Logical types are stored as primitive types.
-
-### Primitive Type
-
-|Primitive Type|Go Type|
-|-|-|
-|BOOLEAN|bool|
-|INT32|int32|
 |INT64|int64|
 |INT96([deprecated](https://github.com/apache/parquet-format/blob/master/CHANGES.md))|string|
 |FLOAT|float32|
@@ -50,7 +46,11 @@ There are two types in Parquet: Primitive Type and Logical Type. Logical types a
 
 ### Logical Type
 
-|Logical Type|Primitive Type|Go Type|
+Parquet 原始的类型比较简单，为了能够和其他类型兼容，并且还能保持主类型的最小化。
+Parquet 还设计了 Logical Types。例如 String 储存为 BYTE_ARRAY，但是需要是 UTF8 编码。
+这样就需要一个 Logical Type 来做注解或者说扩充说明。
+
+|逻辑类型|原始类型|Go Type|
 |-|-|-|
 |UTF8|BYTE_ARRAY|string|
 |INT_8|INT32|int32|
@@ -71,21 +71,21 @@ There are two types in Parquet: Primitive Type and Logical Type. Logical types a
 |LIST|-|slice||
 |MAP|-|map||
 
-### Tips
+### 注意
 
-* go-parquet supports type alias such `type MyString string`. But the base type must follow the table instructions.
+- go-parquet 支持类型别名，如 `type MyString string`。但基本类型必须遵循表格说明。
 
-* Some type convert functions: [converter.go](https://github.com/jimyag/go-parquet/blob/main/types/converter.go)
+- 一些类型转换函数: [converter.go](https://github.com/jimyag/go-parquet/blob/main/types/converter.go)
 
-## Encoding
+## 编码
 
 #### PLAIN
 
-All types
+所有类型
 
 #### PLAIN_DICTIONARY/RLE_DICTIONARY
 
-All types
+所有类型
 
 #### DELTA_BINARY_PACKED
 
@@ -101,28 +101,28 @@ BYTE_ARRAY, UTF8
 
 ### Tips
 
-* Some platforms don't support all kinds of encodings. If you are not sure, just use PLAIN and PLAIN_DICTIONARY.
-* If the fields have many different values, please don't use PLAIN_DICTIONARY encoding. Because it will record all the different values in a map which will use a lot of memory. Actually it use a 32-bit integer to store the index. It can not used if your unique values number is larger than 32-bit.
-* Large array values may be duplicated as min and max values in page stats, significantly increasing file size. If stats are not useful for such a field, they can be omitted from written files by adding `omitstats=true` to a field tag.
+- 有些平台不支持所有编码。如果不确定，请使用 PLAIN 和 PLAIN_DICTIONARY。
+- 如果字段有许多不同的值，请不要使用 PLAIN_DICTIONARY 编码。因为它会将所有不同的值记录在一个映射中，这会占用大量内存。实际上，它使用 32 位整数来存储索引。如果您的主键数量大于 32 位，则不能使用该编码。
+- 大的数组值可能会在页面统计中作为最小值和最大值重复出现，从而大大增加文件大小。如果统计信息对此类字段无用，可在字段标签中添加 `omitstats=true`，从而从写入的文件中省略统计信息。
 
-## Repetition Type
+## 重复类型
 
-There are three repetition types in Parquet: REQUIRED, OPTIONAL, REPEATED.
+在 Parquet 文件中，字段可以是 REQUIRED（必须的）、OPTIONAL（可选的）或 REPEATED（重复的），这些都是重复类型的一部分。
 
-|Repetition Type|Example|Description|
+|重复类型|例子 |说明|
 |-|-|-|
 |REQUIRED|```V1 int32 `parquet:"name=v1, type=INT32"` ```|No extra description|
 |OPTIONAL|```V1 *int32 `parquet:"name=v1, type=INT32"` ```|Declare as pointer|
-|REPEATED|```V1 []int32 `parquet:"name=v1, type=INT32, repetitiontype=REPEATED"` ```|Add 'repetitiontype=REPEATED' in tags|
+|REPEATED|```V1 []int32 `parquet:"name=v1, type=INT32, repetitiontype=REPEATED"` ```|添加'repetitiontype=REPEATED' 标签|
 
-### Tips
+### 注意
 
-* The difference between a List and a REPEATED variable is the 'repetitiontype' in tags. Although both of them are stored as slice in go, they are different in parquet. You can find the detail of List in parquet at [here](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md). I suggest just use a List.
-* For LIST and MAP, some existed parquet files use some nonstandard formats(see [here](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md)). For standard format, go-parquet will convert them to go slice and go map. For nonstandard formats, go-parquet will convert them to corresponding structs.
+- List 与 REPEATED 变量的区别在于标签中的 "重复类型"。虽然这两个变量在 go 中都存储为 slice，但在 parquet 中是不同的。您可以在 [此处](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md) 中找到 parquet 中 List 的详细信息。我建议使用 List。
+- 对于 LIST 和 MAP，一些存在的 parquet 文件使用一些非标准格式（见 [此处](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md)）。对于标准格式，go-parquet 将把它们转换为 go slice 和 go map。对于非标准格式，go-parquet 将把它们转换为相应的结构体。
 
-## Example of Type and Encoding
+## 例子
 
-```golang
+```go
  Bool              bool    `parquet:"name=bool, type=BOOLEAN"`
  Int32             int32   `parquet:"name=int32, type=INT32"`
  Int64             int64   `parquet:"name=int64, type=INT64"`
@@ -165,23 +165,23 @@ There are three repetition types in Parquet: REQUIRED, OPTIONAL, REPEATED.
  Repeated []int32          `parquet:"name=repeated, type=INT32, repetitiontype=REPEATED"`
 ```
 
-## Compression Type
+## 压缩格式支持
 
-|Type|Support|
+|压缩算法|是否支持|
 |-|-|
-| CompressionCodec_UNCOMPRESSED | YES|
-|CompressionCodec_SNAPPY|YES|
-|CompressionCodec_GZIP|YES|
-|CompressionCodec_LZO|NO|
-|CompressionCodec_BROTLI|NO|
-|CompressionCodec_LZ4 |YES|
-|CompressionCodec_ZSTD|YES|
+| CompressionCodec_UNCOMPRESSED | 是|
+|CompressionCodec_SNAPPY|是|
+|CompressionCodec_GZIP|是|
+|CompressionCodec_LZO|否|
+|CompressionCodec_BROTLI|否|
+|CompressionCodec_LZ4 |是|
+|CompressionCodec_ZSTD|是|
 
 ## ParquetFile
 
-Read/Write a parquet file need a ParquetFile interface implemented
+读写 parquet 文件需要实现 ParquetFile 接口
 
-```golang
+```go
 type ParquetFile interface {
  io.Seeker
  io.Reader
@@ -192,39 +192,41 @@ type ParquetFile interface {
 }
 ```
 
-Using this interface, go-parquet can read/write parquet file on different platforms. All the file sources are at [source](./source/). Now it supports(local/hdfs/s3/gcs/memory).
+使用该接口，go-parquet 可以在不同数据源上读写 parquet 文件。目前支持数据源都位于 [source]（./source/）。现在，它支持（本地/hdfs/s3/gcs/内存）。
 
-## Writer
+## 写入
 
-Four Writers are supported: ParquetWriter, JSONWriter, CSVWriter, ArrowWriter.
+支持四种写入器： ParquetWriter、JSONWriter、CSVWriter 和 ArrowWriter。
 
-* ParquetWriter is used to write predefined Golang structs.
+- ParquetWriter 用于编写预定义的 Golang 结构体。
 [Example of ParquetWriter](https://github.com/jimyag/go-parquet/blob/main/example/local_flat.go)
 
-* JSONWriter is used to write JSON strings
+- JSONWriter 用于写入 JSON 字符串
 [Example of JSONWriter](https://github.com/jimyag/go-parquet/blob/main/example/json_write.go)
 
-* CSVWriter is used to write data format similar with CSV(not nested)
+- CSVWriter 用于写入与 CSV 格式类似的数据（非嵌套）。
 [Example of CSVWriter](https://github.com/jimyag/go-parquet/blob/main/example/csv_write.go)
 
-* ArrowWriter is used to write parquet files using Arrow Schemas
+- ArrowWriter 用于使用 Arrow 模式写入镶嵌文件
 [Example of ArrowWriter](https://github.com/jimyag/go-parquet/blob/main/example/arrow_to_parquet.go)
 
-## Reader
+## 读取
 
-Two Readers are supported: ParquetReader, ColumnReader
+支持两种读取器: ParquetReader, ColumnReader
 
-* ParquetReader is used to read predefined Golang structs
+- ParquetReader 用于读取预定义的 Golang 结构体
 [Example of ParquetReader](https://github.com/jimyag/go-parquet/blob/main/example/local_nested.go)
 
-* ColumnReader is used to read raw column data. The read function return 3 slices([value], [RepetitionLevel], [DefinitionLevel]) of the records.
+- ColumnReader 用于读取原始列数据。读取函数返回记录的 3 个片段（[value], [RepetitionLevel], [DefinitionLevel]）。
 [Example of ColumnReader](https://github.com/jimyag/go-parquet/blob/main/example/column_read.go)
 
-### Tips
+### 注意
 
-* If the parquet file is very big (even the size of parquet file is small, the uncompressed size may be very large), please don't read all rows at one time, which may induce the OOM. You can read a small portion of the data at a time like a stream-oriented file.
+- 如果镶嵌文件非常大（即使镶嵌文件很小，未压缩的大小也可能很大），请不要一次读取所有行，否则可能会导致 OOM。您可以像读取面向流的文件一样，一次读取一小部分数据。
 
-* `RowGroupSize` and `PageSize` may influence the final parquet file size. You can find the details from [here](https://github.com/apache/parquet-format). You can reset them in ParquetWriter
+- `RowGroupSize` and `PageSize` may influence the final parquet file size. You can find the details from [here](https://github.com/apache/parquet-format). You can reset them in ParquetWriter
+
+- `RowGroupSize`和 `PageSize`可能会影响最终拼版文件的大小。详细信息请参阅 [此处](https://github.com/apache/parquet-format)。你可以在 ParquetWriter 中重新设置它们
 
 ```go
  pw.RowGroupSize = 128 * 1024 * 1024 // default 128M
@@ -233,7 +235,7 @@ Two Readers are supported: ParquetReader, ColumnReader
 
 ## Schema
 
-There are four methods to define the schema: go struct tags, Json, CSV, Arrow metadata. Only items in schema will be written and others will be ignored.
+有四种方法可以定义模式：结构体的标签、Json、CSV、Arrow metadata。只有Schema中的项目才会被写入，其他项目将被忽略。
 
 ### Tag
 
@@ -253,7 +255,7 @@ type Student struct {
 
 ### JSON
 
-JSON schema can be used to define some complicated schema, which can't be defined by tag.
+JSON 模式可用于定义一些复杂的模式，这些模式无法通过标签来定义。
 
 ```golang
 type Student struct {
@@ -354,17 +356,17 @@ var jsonSchema string = `
 
 [Example of Arrow metadata](https://github.com/jimyag/go-parquet/blob/main/example/arrow_to_parquet.go)
 
-### Tips
+### 注意
 
-* go-parquet reads data as an object in Golang and every field must be a public field, which start with an upper letter. This field name we call it `InName`. Field name in parquet file we call it `ExName`. Function `common.HeadToUpper` converts `ExName` to `InName`. There are some restriction:
+- 在 Golang 中，go-parquet 以对象的形式读取数据，每个字段都必须是以大写字母开头的公共字段。这个字段名称为 `InName`。在 parquet 文件中的字段名称为 `ExName`。函数 `common.HeadToUpper` 将 `ExName` 转换为 `InName`。有一些限制：
 
-1. It's not allowed if two field names are only different at their first letter case. Such as `name` and `Name`.
-2. `PARGO_PREFIX_` is a reserved string, which you'd better not use it as a name prefix. ([#294](https://github.com/jimyag/go-parquet/issues/294))
-3. Use `\x01` as the delimiter of fields to support `.` in some field name.([dot_in_name.go](https://github.com/jimyag/go-parquet/blob/main/example/dot_in_name.go), [#349](https://github.com/jimyag/go-parquet/issues/349))
+1. 如果两个字段名仅在第一个字母大小写上不同，则不允许使用。如 `name` 和 `Name`。
+2. `PARGO_PREFIX_` 是一个保留字符串，最好不要将其用作名称前缀。([#294](https://github.com/xitongsys/parquet-go/issues/294))
+3. 使用 `\x01` 作为字段的分隔符，以支持某些字段名中的 `.`。([dot_in_name.go](https://github.com/jimyag/go-parquet/blob/main/example/dot_in_name.go), [#349](https://github.com/xitongsys/parquet-go/issues/349))
 
-## Concurrency
+## 并发
 
-Marshal/Unmarshal is the most time consuming process in writing/reading. To improve the performance, go-parquet can use multiple goroutines to marshal/unmarshal the objects. You can set the concurrent number parameter `np` in the Read/Write initial functions.
+在写入/读取过程中，Marshal/Unmarshal 是最耗时的过程。为了提高性能，go-parquet 可以使用多个 goroutines 来 Marshal/unmarshal 对象。您可以在读取/写入初始函数中设置并发数参数 `np`。
 
 ```golang
 func NewParquetReader(pFile ParquetFile.ParquetFile, obj interface{}, np int64) (*ParquetReader, error)
@@ -378,26 +380,24 @@ func NewArrowWriter(arrowSchema *arrow.Schema, pfile source.ParquetFile, np int6
 
 |Example file|Descriptions|
 |-|-|
-|[local_flat.go](https://github.com/jimyag/go-parquet/blob/main/example/local_flat.go)|write/read parquet file with no nested struct|
-|[local_nested.go](https://github.com/jimyag/go-parquet/blob/main/example/local_nested.go)|write/read parquet file with nested struct|
-|[read_partial.go](https://github.com/jimyag/go-parquet/blob/main/example/read_partial.go)|read partial fields from a parquet file|
-|[read_partial2.go](https://github.com/jimyag/go-parquet/blob/main/example/read_partial2.go)|read sub-struct from a parquet file|
-|[read_without_schema_predefined.go](https://github.com/jimyag/go-parquet/blob/main/example/read_without_schema_predefined.go)|read a parquet file and no struct/schema predefined needed|
-|[read_partial_without_schema_predefined.go](https://github.com/jimyag/go-parquet/blob/main/example/read_partial_without_schema_predefined.go)|read sub-struct from a parquet file and no struct/schema predefined needed|
-|[json_schema.go](https://github.com/jimyag/go-parquet/blob/main/example/json_schema.go)|define schema using json string|
-|[json_write.go](https://github.com/jimyag/go-parquet/blob/main/example/json_write.go)|convert json to parquet|
-|[convert_to_json.go](https://github.com/jimyag/go-parquet/blob/main/example/convert_to_json.go)|convert parquet to json|
-|[csv_write.go](https://github.com/jimyag/go-parquet/blob/main/example/csv_write.go)|special csv writer|
-|[column_read.go](https://github.com/jimyag/go-parquet/blob/main/example/column_read.go)|read raw column data and return value,repetitionLevel,definitionLevel|
-|[type.go](https://github.com/jimyag/go-parquet/blob/main/example/type.go)|example for schema of types|
-|[type_alias.go](https://github.com/jimyag/go-parquet/blob/main/example/type_alias.go)|example for type alias|
-|[writer.go](https://github.com/jimyag/go-parquet/blob/main/example/writer.go)|create ParquetWriter from io.Writer|
-|[keyvalue_metadata.go](https://github.com/jimyag/go-parquet/blob/main/example/keyvalue_metadata.go)|write keyvalue metadata|
-|[dot_in_name.go](https://github.com/jimyag/go-parquet/blob/main/example/dot_in_name.go)|`.` in filed name|
-|[arrow_to_parquet.go](https://github.com/jimyag/go-parquet/blob/main/example/arrow_to_parquet.go)|write/read parquet file using arrow definition|
+|[local_flat.go](https://github.com/jimyag/go-parquet/blob/main/example/local_flat.go)|读写无嵌套结构的parquet文件|
+|[local_nested.go](https://github.com/jimyag/go-parquet/blob/main/example/local_nested.go)|读写嵌套结构的parquet文件|
+|[read_partial.go](https://github.com/jimyag/go-parquet/blob/main/example/read_partial.go)|从 parquet 文件中读取部分字段|
+|[read_partial2.go](https://github.com/jimyag/go-parquet/blob/main/example/read_partial2.go)|从 parquet 文件中读取部分字段|
+|[read_without_schema_predefined.go](https://github.com/jimyag/go-parquet/blob/main/example/read_without_schema_predefined.go)|读取parquet，无需预定义结构/模式|
+|[read_partial_without_schema_predefined.go](https://github.com/jimyag/go-parquet/blob/main/example/read_partial_without_schema_predefined.go)|从 parquet 文件读取子字段，无需预定义结构/模式|
+|[json_schema.go](https://github.com/jimyag/go-parquet/blob/main/example/json_schema.go)|定义 schema 使用 json |
+|[json_write.go](https://github.com/jimyag/go-parquet/blob/main/example/json_write.go)|将json转为parquet|
+|[convert_to_json.go](https://github.com/jimyag/go-parquet/blob/main/example/convert_to_json.go)|将parquet转为json|
+|[csv_write.go](https://github.com/jimyag/go-parquet/blob/main/example/csv_write.go)|csv 写入|
+|[column_read.go](https://github.com/jimyag/go-parquet/blob/main/example/column_read.go)|读取原始列数据并返回值、重复级别、定义级别|
+|[type.go](https://github.com/jimyag/go-parquet/blob/main/example/type.go)|类型示例|
+|[type_alias.go](https://github.com/jimyag/go-parquet/blob/main/example/type_alias.go)|类型别名示例|
+|[writer.go](https://github.com/jimyag/go-parquet/blob/main/example/writer.go)|从 io.Writer 写入|
+|[keyvalue_metadata.go](https://github.com/jimyag/go-parquet/blob/main/example/keyvalue_metadata.go)|写入/读取 key/value metadata|
+|[dot_in_name.go](https://github.com/jimyag/go-parquet/blob/main/example/dot_in_name.go)|字段中包含`.`|
+|[arrow_to_parquet.go](https://github.com/jimyag/go-parquet/blob/main/example/arrow_to_parquet.go)|使用 arrow 定义读写parquet文件|
 
-## Tool
+## 工具
 
-* [parquet-tools](https://github.com/jimyag/parquet-tools): Command line tools that aid in the inspection of Parquet files
-
-Please start to use it and give feedback or just star it! Help is needed and anything is welcome.
+- [parquet-tools](https://github.com/jimyag/parquet-tools): 帮助检查 Parquet 文件的命令行工具
