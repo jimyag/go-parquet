@@ -6,6 +6,7 @@ test:
 fmt:
 	go fmt ./...
 
+PACKAGES=`go list ./... | grep -v -e example -e "parquet/parquet"`
 staticcheck:
 	staticcheck ${PACKAGES}
 
