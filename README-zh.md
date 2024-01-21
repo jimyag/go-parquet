@@ -37,6 +37,14 @@ go run local_flat.go
 
 ## Type
 
+Parquet 有两种类型： 原始类型和逻辑类型。逻辑类型存储为原始类型。
+
+### 原始类型
+
+|Primitive Type|Go Type|
+|-|-|
+|BOOLEAN|bool|
+|INT32|int32|
 |INT64|int64|
 |INT96([deprecated](https://github.com/apache/parquet-format/blob/master/CHANGES.md))|string|
 |FLOAT|float32|
